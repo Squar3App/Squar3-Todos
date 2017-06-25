@@ -5,11 +5,11 @@ Video Stabilization using Position Markers
 
 - [X] Create GitHub
 - [ ] Develop Java Library for detecting position markers
- - Soham
+   - Soham
 - [ ] Develop app Wireframes and UI
 - [ ] Develop iOS app
 - [ ] Develop Android app
- - Soham
+   - Soham
 
 ### Research
 
