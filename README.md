@@ -1,4 +1,4 @@
-# ThreeSquare
+# Squar3
 Video and Image Stabilization using QRCode-like Position Markers and 
 
 ### Library Todos
