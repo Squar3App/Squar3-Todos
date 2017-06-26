@@ -1,1 +1,10 @@
-#iOS App
+# Squar3
+Video and Image Stabilization using QRCode-like Position Markers and 
+
+### iOS Todos
+
+- [ ] Develop app Wireframes and UI
+- [ ] Begin designing Views
+- [ ] Integrate Library (Java?)
+
+
