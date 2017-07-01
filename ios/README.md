@@ -34,7 +34,7 @@ Video and Image Stabilization using QRCode-like Position Markers
     - [ ] Create Special Link (One-Time Key) for Resetting Password
 
 #### To-Dos for the Future (Not Priorities):
-- Direct Messaging View Controller (Not a Priority)
+- Direct Messaging View Controller
     - [ ] Click on Button in Friends View Controller
 - Pick a Location for a Post
     - [ ] Give Suggestions Based on Current Location
