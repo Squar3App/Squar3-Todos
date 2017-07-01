@@ -30,6 +30,8 @@ Video and Image Stabilization using QRCode-like Position Markers
     - [ ] User can Scroll Through Everyone's Videos
 - Record a Video View Controller
     - [ ] Just Record a Video and Post it in the Main Feed
+- Secure Forgot Password
+    - [ ] Create Special Link (One-Time Key) for Resetting Password
 
 #### To-Dos for the Future (Not Priorities):
 - Direct Messaging View Controller (Not a Priority)
