@@ -1,35 +1,49 @@
-import java.io.*;
-import javax.imageio.*;
-import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.opencv.core.*;
+import org.opencv.core.Core.*;
+import org.opencv.imgcodecs.*;
+import org.opencv.imgproc.*;
 
 public class Main {
 
+	static { System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
 	public static void main(String[] args) {
-		Image input = load("img/elephant-crop.jpg");
-		display(input);
-		
-		PositionMarker pm = input.findPositionMarker();
-		input.transform(pm);
-		
-	}
-	
-	public static Image load(String filepath) {
-		return load(new File(filepath));
-	}
-	public static Image load(File file) {
-		try {
-			return new Image(ImageIO.read(file));
-		} 
-		catch (IOException e) { e.printStackTrace(); }
-		return null;
-	}
 
-	public static void display(Image img) {
-		JFrame frame = new JFrame();
-		frame.add(new JLabel(new ImageIcon(img)));
-		frame.pack();
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
+		Mat img  = Imgcodecs.imread("img/elephant-crop.jpg");
+		Mat templ = Imgcodecs.imread("img/pattern.jpg");
+
+		int result_cols =  img.cols() - templ.cols() + 1;
+		int result_rows = img.rows() - templ.rows() + 1;
+		int match_method = Imgproc.TM_CCOEFF;
+
+
+		Mat result = new Mat(result_cols, result_rows, CvType.CV_32FC1);
+		Imgproc.matchTemplate(img, templ, result, match_method);
+		//Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
+
+		Utils.show(img, "Before");
+		
+		MinMaxLocResult mmr;
+		Point loc;
+		
+		for(int i = 0; i < 3; i++){
+			mmr = Core.minMaxLoc(result);
+			loc = mmr.maxLoc;
+			
+			Point bL = new Point(loc.x - templ.cols(), loc.y +templ.rows());
+			Point bR = new Point(loc.x + templ.cols(), loc.y + templ.rows());
+			Point tL = new Point(loc.x - templ.cols(), loc.y - templ.rows());
+			Point tR = new Point(loc.x + templ.cols(), loc.y - templ.rows());
+			
+			Imgproc.rectangle(img, loc, bR, new Scalar(0, 0, 255));
+			ArrayList<MatOfPoint> arr = new ArrayList<MatOfPoint>() {{ add(new MatOfPoint(bL, bR, tR, tL)); }};
+			Imgproc.fillPoly(result, arr, new Scalar(0));;
+			
+			System.out.println(mmr.maxVal);
+		}
+		
+		Utils.show(img, "After");
+	}	
 }
