@@ -1,33 +1,18 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.core.Core.MinMaxLocResult;
-import org.opencv.imgproc.Imgproc;
+import java.util.*;
+import org.opencv.core.*;
+import org.opencv.core.Core.*;
+import org.opencv.features2d.FeatureDetector;
+import org.opencv.imgproc.*;
 
 public class Squar3Processor {
 
-	static class Squar3Point implements Comparable {
+	static class Squar3Point implements Comparable<Squar3Point> {
 		double x, y;
-
-		@Override public int compareTo(Object o) {
-			Squar3Point o2 = (Squar3Point) o;
-			if((int)(x - o2.x) != 0) return (int) (x - o2.x);
-			return (int) (y - o2.y);
-		}
-		@Override public String toString() {
-			return "[" + x + ", " + y + "]";
-		}
-		
+		@Override public int compareTo(Squar3Point o2) { if((int)(x - o2.x) != 0) return (int) (x - o2.x); return (int) (y - o2.y); }
+		@Override public String toString() { return "[" + x + ", " + y + "]"; }
 	}
 	
-	public static Squar3 findFiducial(Mat img, Mat templ) {
+	public static Squar3 findSquar3(Mat img, Mat templ) {
 		Mat img2 = new Mat();
 		img.copyTo(img2);
 		
@@ -65,4 +50,19 @@ public class Squar3Processor {
 		Arrays.sort(pts);
 		return new Squar3(img2, pts[0].x, pts[0].y, pts[1].x, pts[1].y, pts[2].x, pts[2].y);
 	}
+	
+	// TODO: ALL! Add Feature Detection w/ Image Homography
+	public static Squar3 findHomology(Mat img, Mat templ) {
+		FeatureDetector surf = FeatureDetector.create(FeatureDetector.SURF);
+		
+		MatOfPoint keypointObject = new MatOfPoint();
+		MatOfPoint keypointScene = new MatOfPoint();
+		surf.detect(new ArrayList() {{add(templ);}}, new ArrayList() {{ add(keypointObject); }});
+		surf.detect(new ArrayList() {{add(img);}}, new ArrayList() {{ add(keypointScene); }});
+		
+		
+		
+		return null;
+	}
+
 }
