@@ -4,7 +4,7 @@ Video and Image Stabilization using QRCode-like Position Markers and
 ### Library Todos
 
 - [x] Be able to detect position markers in image
-- [ ] Be able to detect rotated position markers in image
+- [x] Be able to detect rotated position markers in image
 - [x] Transform/crop image based on position markers
 - [ ] Be able to detect positions in video
 - [ ] Be able to detect rotated position markers in video
