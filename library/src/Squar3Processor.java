@@ -11,7 +11,8 @@ import org.opencv.features2d.Features2d;
 import org.opencv.imgproc.*;
 
 public class Squar3Processor {
-
+	public static final int ORB = 1, BRISK = 1;
+	
 	static class Squar3Point implements Comparable<Squar3Point> {
 		double x, y;
 		@Override public int compareTo(Squar3Point o2) { if((int)(x - o2.x) != 0) return (int) (x - o2.x); return (int) (y - o2.y); }
@@ -62,13 +63,16 @@ public class Squar3Processor {
 	// ANALYZE: ORB finds three areas near fiducials, BRISK finds one really really well. Bruteforce_Hamming vs. Bruteforce_Hamminglut?
 	// TODO: Improve speed!
 	public static Squar3 findHomology(Mat imgScene, Mat imgObject) {
+		return findHomology(imgScene, imgObject, FeatureDetector.BRISK);
+	}
+	public static Squar3 findHomology(Mat imgScene, Mat imgObject, int fd) {
 		Mat img = new Mat();
 		imgScene.copyTo(img);
 		
 		Squar3Point[] pts = new Squar3Point[3];
 		
 		for(int ct = 0; ct < 3; ct++) {
-			FeatureDetector detector = FeatureDetector.create(FeatureDetector.BRISK);
+			FeatureDetector detector = FeatureDetector.create((fd == ORB) ? FeatureDetector.ORB : FeatureDetector.BRISK);
 
 			MatOfKeyPoint keypointsObject = new MatOfKeyPoint();
 			MatOfKeyPoint keypointsScene = new MatOfKeyPoint();
@@ -76,7 +80,7 @@ public class Squar3Processor {
 			detector.detect(imgObject, keypointsObject);
 			detector.detect(img, keypointsScene);
 
-			DescriptorExtractor extractor = DescriptorExtractor.create(DescriptorExtractor.BRISK);
+			DescriptorExtractor extractor = DescriptorExtractor.create((fd == ORB) ? DescriptorExtractor.ORB : DescriptorExtractor.BRISK);
 
 			Mat descriptorObject = new Mat();
 			Mat descriptorScene = new Mat();
