@@ -1,3 +1,6 @@
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.util.*;
 
 
@@ -12,7 +15,7 @@ import org.opencv.imgproc.*;
 
 public class Squar3Processor {
 	public static final int ORB = 1, BRISK = 1;
-	
+
 	static class Squar3Point implements Comparable<Squar3Point> {
 		double x, y;
 		@Override public int compareTo(Squar3Point o2) { if((int)(x - o2.x) != 0) return (int) (x - o2.x); return (int) (y - o2.y); }
@@ -68,9 +71,9 @@ public class Squar3Processor {
 	public static Squar3 findHomology(Mat imgScene, Mat imgObject, int fd) {
 		Mat img = new Mat();
 		imgScene.copyTo(img);
-		
+
 		Squar3Point[] pts = new Squar3Point[3];
-		
+
 		for(int ct = 0; ct < 3; ct++) {
 			FeatureDetector detector = FeatureDetector.create((fd == ORB) ? FeatureDetector.ORB : FeatureDetector.BRISK);
 
@@ -160,7 +163,7 @@ public class Squar3Processor {
 			pt.x = (new Point(sceneCorners.get(0, 0)).x + new Point(sceneCorners.get(1, 0)).x + new Point(sceneCorners.get(2, 0)).x + new Point(sceneCorners.get(3, 0)).x) / 4;
 			pt.y = (new Point(sceneCorners.get(0, 0)).y + new Point(sceneCorners.get(1, 0)).y + new Point(sceneCorners.get(2, 0)).y + new Point(sceneCorners.get(3, 0)).y) / 4;
 			pts[ct] = pt;	
-			
+
 			ArrayList<MatOfPoint> arr = new ArrayList<MatOfPoint>() {{ 
 				add(new MatOfPoint(new Point(sceneCorners.get(0,0)), new Point(sceneCorners.get(1,0)), new Point(sceneCorners.get(2,0)), new Point(sceneCorners.get(3,0))));
 			}};
@@ -169,5 +172,4 @@ public class Squar3Processor {
 		Arrays.sort(pts);
 		return new Squar3(img, pts[0].x, pts[0].y, pts[1].x, pts[1].y, pts[2].x, pts[2].y);
 	}
-
 }
